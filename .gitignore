@@ -1,0 +1,11 @@
+# Laufzeit-/Nutzerdaten - niemals einchecken
+webfrontend/htmlauth/session
+webfrontend/htmlauth/database.csv
+webfrontend/htmlauth/renault.log
+webfrontend/htmlauth/renault.log.1
+webfrontend/htmlauth/config.php.backup
+*.backup
+
+# Betriebssystem
+.DS_Store
+Thumbs.db
