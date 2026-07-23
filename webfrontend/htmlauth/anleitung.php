@@ -8,11 +8,11 @@ $helptemplate = "help.html";
 
 $navbar[1]['Name'] = "Home";
 $navbar[1]['URL'] = 'index.php';
-$navbar[2]['Name'] = "Load History";
+$navbar[2]['Name'] = "Ladehistorie";
 $navbar[2]['URL'] = 'history.php';
-$navbar[3]['Name'] = "Settings";
+$navbar[3]['Name'] = "Einstellungen";
 $navbar[3]['URL'] = 'ersteinrichtung.php';
-$navbar[4]['Name'] = "Konfiguration";
+$navbar[4]['Name'] = "gesp. Konfiguration";
 $navbar[4]['URL'] = 'status.php';
 $navbar[5]['Name'] = "Log";
 $navbar[5]['URL'] = 'log.php';
@@ -45,10 +45,10 @@ $host = htmlspecialchars($_SERVER['HTTP_HOST'] ?? '<loxberry-ip>', ENT_QUOTES, '
 Kommandos (Vorklimatisierung, Laden starten) sendet der Miniserver &uuml;ber einen Virtuellen Ausgang.</p>
 
 <div class="rna-step"><b>Schritt 1: Plugin einrichten</b><br><br>
-Im Reiter <b>Settings</b> die Zugangsdaten des My-Renault-Kontos eintragen: E-Mail, Passwort,
+Im Reiter <b>Einstellungen</b> die Zugangsdaten des My-Renault-Kontos eintragen: E-Mail, Passwort,
 <b>VIN</b> (Fahrgestellnummer, steht in der My-Renault-App), Land und die Fahrzeug-Generation
 (<b>PH1</b> = Zoe bis ca. 2019, <b>PH2</b> = ab 2019 sowie Twingo Electric).<br><br>
-Danach im Reiter <b>Konfiguration</b> pr&uuml;fen, ob alles gr&uuml;n ist, und einmal <b>Home</b> aufrufen &mdash;
+Danach im Reiter <b>gesp. Konfiguration</b> pr&uuml;fen, ob alles gr&uuml;n ist, und einmal <b>Home</b> aufrufen &mdash;
 wenn dort Kilometerstand und Batteriestand erscheinen, funktioniert die Verbindung zu Renault.
 Falls nicht: Reiter <b>Log</b> ansehen, dort steht der genaue Fehler.</div>
 
@@ -57,7 +57,7 @@ LoxBerry-Men&uuml; &rarr; <b>MQTT Gateway</b> &ouml;ffnen. Nach dem ersten erfol
 unter <i>Incoming Overview</i> die Themen (Topics) des Plugins, z.&nbsp;B.:<br>
 <span class="rna-mono">Renault/<?= $rza ?>/BattSOC</span> &nbsp;
 <span class="rna-mono">Renault/<?= $rza ?>/Range</span> &nbsp;
-<span class="rna-mono">Renault/<?= $rza ?>/CargingStatus</span><br><br>
+<span class="rna-mono">Renault/<?= $rza ?>/ChargingStatus</span><br><br>
 Damit der Miniserver die Werte bekommt: im MQTT Gateway unter <i>Subscriptions</i> das Thema
 <span class="rna-mono">Renault/#</span> abonnieren und bei den gew&uuml;nschten Topics das H&auml;kchen
 <i>&bdquo;An Miniserver senden&ldquo;</i> setzen. Das Gateway legt die Virtuellen Eing&auml;nge am
@@ -68,7 +68,7 @@ Miniserver <b>automatisch</b> an &mdash; nichts von Hand anlegen!</div>
 <tr><th>MQTT-Topic</th><th>Bedeutung</th><th>Beispielwert</th></tr>
 <tr><td><span class="rna-mono">Renault/<?= $rza ?>/BattSOC</span></td><td>Batteriestand in %</td><td>78</td></tr>
 <tr><td><span class="rna-mono">Renault/<?= $rza ?>/Range</span></td><td>Reichweite in km</td><td>212</td></tr>
-<tr><td><span class="rna-mono">Renault/<?= $rza ?>/CargingStatus</span></td><td>L&auml;dt gerade? 1 = ja, 0 = nein</td><td>1</td></tr>
+<tr><td><span class="rna-mono">Renault/<?= $rza ?>/ChargingStatus</span></td><td>L&auml;dt gerade? 1 = ja, 0 = nein</td><td>1</td></tr>
 <tr><td><span class="rna-mono">Renault/<?= $rza ?>/CableStatus</span></td><td>Kabel eingesteckt? 1 = ja, 0 = nein</td><td>1</td></tr>
 <tr><td><span class="rna-mono">Renault/<?= $rza ?>/ChargingTime</span></td><td>Restladezeit in Minuten</td><td>95</td></tr>
 <tr><td><span class="rna-mono">Renault/<?= $rza ?>/ChargingEffekt</span></td><td>Ladeleistung in kW</td><td>11</td></tr>
@@ -78,8 +78,11 @@ Miniserver <b>automatisch</b> an &mdash; nichts von Hand anlegen!</div>
 <tr><td><span class="rna-mono">Renault/<?= $rza ?>/GPS-Latitude</span> / <span class="rna-mono">GPS-Longitude</span></td><td>Fahrzeugposition (nur PH2)</td><td>49.87&hellip;</td></tr>
 <tr><td><span class="rna-mono">Renault/<?= $rza ?>/LastDataRetrieval</span></td><td>Uhrzeit des letzten Abrufs (HHMM)</td><td>1830</td></tr>
 </table>
-<i>Hinweis:</i> &bdquo;CargingStatus&ldquo; (ohne h) ist kein Tippfehler dieser Anleitung, sondern
-der historisch gewachsene Topic-Name des Plugins &mdash; er bleibt aus Kompatibilit&auml;tsgr&uuml;nden so.</div>
+<i>Hinweis:</i> Bis zur Version&nbsp;1.4.1 war &bdquo;CargingStatus&ldquo; (ohne h) der historisch
+gewachsene Topic-Name des Plugins und blieb aus Kompatibilit&auml;tsgr&uuml;nden zun&auml;chst so.
+Mit Version&nbsp;1.4.1 wurde dieser urspr&uuml;ngliche Tippfehler korrigiert &mdash; das Topic hei&szlig;t
+nun &bdquo;ChargingStatus&ldquo; und muss daher auch in der Loxone&nbsp;Konfiguration entsprechend
+angepasst werden.</div>
 
 <div class="rna-step"><b>Schritt 4: Kommandos senden (Virtueller Ausgang)</b><br><br>
 In <b>Loxone Config</b>: Miniserver anklicken &rarr; <i>Virtuelle Ausg&auml;nge</i> &rarr; neuen
@@ -107,7 +110,7 @@ Statustext: <span class="rna-mono">Auto: &lt;v1.0&gt; % geladen, Reichweite &lt;
 H&auml;kchen &bdquo;Visualisierung&ldquo; setzen, fertig ist die App-Kachel.<br><br>
 <b>Benachrichtigung &bdquo;Auto vollgeladen&ldquo;:</b> Schwellwertschalter an
 <span class="rna-mono">BattSOC</span> (Ein-Schwelle 79,5 / Aus-Schwelle 79) UND
-<span class="rna-mono">CargingStatus</span> = 1 &rarr; Benachrichtigungs-Baustein
+<span class="rna-mono">ChargingStatus</span> = 1 &rarr; Benachrichtigungs-Baustein
 (&bdquo;Auto ist bei 80&nbsp;% &mdash; Ladung beenden?&ldquo;).<br><br>
 <b>PV-&Uuml;berschussladen:</b> Bei PV-&Uuml;berschuss den Befehl <i>Ladeplan deaktivieren</i>
 (<span class="rna-mono">?cmoff</span>) senden &rarr; das Auto l&auml;dt sofort; bei Wolken wieder
@@ -116,16 +119,16 @@ H&auml;kchen &bdquo;Visualisierung&ldquo; setzen, fertig ist die App-Kachel.<br>
 <div class="rna-step"><b>Stolperfallen aus der Praxis</b><br><br>
 &bull; Renault erlaubt <b>max. 1 Datenabruf pro Minute</b> &mdash; das Plugin h&auml;lt das automatisch ein
 (Meldung &bdquo;Abruf &uuml;bersprungen&ldquo; im Log ist also normal).<br>
-&bull; Nach dem Speichern der Settings wird der Anmelde-Cache geleert und beim n&auml;chsten Aufruf neu
+&bull; Nach dem Speichern der Einstellungen wird der Anmelde-Cache geleert und beim n&auml;chsten Aufruf neu
 angemeldet &mdash; der erste Abruf kann daher einen Moment dauern.<br>
 &bull; Erscheint im Log &bdquo;There is no data for this vin and uid&ldquo;, obwohl die VIN stimmt:
 Datenfreigabe im Auto aktivieren (My-Renault-App bzw. Fahrzeugmen&uuml; &rarr; Datenschutz) und pr&uuml;fen,
 ob die App selbst Live-Daten zeigt.<br>
-&bull; Die MQTT-Topics enthalten den <b>Auto-Namen aus den Settings</b> (aktuell:
+&bull; Die MQTT-Topics enthalten den <b>Auto-Namen aus den Einstellungen</b> (aktuell:
 &bdquo;<?= $rza ?>&ldquo;). Wird er ge&auml;ndert, &auml;ndern sich alle Topics &mdash; dann die
 Subscriptions im MQTT Gateway anpassen.</div>
 
-<div class="rna-info"><b>Kurz-Checkliste:</b> Settings ausf&uuml;llen &rarr; Home einmal aufrufen &rarr;
+<div class="rna-info"><b>Kurz-Checkliste:</b> Einstellungen ausf&uuml;llen &rarr; Home einmal aufrufen &rarr;
 Log pr&uuml;fen (&bdquo;Batterie-Status OK&ldquo;) &rarr; MQTT Gateway: <span class="rna-mono">Renault/#</span>
 abonnieren &rarr; Werte in Loxone verwenden &rarr; optional Virtuellen Ausgang f&uuml;r Klima/Laden anlegen.</div>
 

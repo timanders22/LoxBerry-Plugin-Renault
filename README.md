@@ -14,9 +14,18 @@ Basiert auf [ZoePHP](https://github.com/db-EV/ZoePHP) von db-EV.
 - MQTT-Publish über das LoxBerry MQTT Gateway (Topics `Renault/<Autoname>/...`)
 - Kommandos: Vorklimatisierung, Sofortladen, Ladeplan ein/aus (`?acnow`, `?chargenow`, `?cmon`, `?cmoff`)
 - Ladehistorie (CSV) mit Diagramm-Seite
-- Reiter **Konfiguration** (gespeicherte Einstellungen + Schnell-Diagnose),
+- Reiter **gesp. Konfiguration** (gespeicherte Einstellungen + Schnell-Diagnose),
   **Log** (jeder API-Schritt wird protokolliert) und **Anleitung**
   (Schritt-für-Schritt-Einbindung in Loxone für Einsteiger)
+
+## Version 1.4.1
+
+- Tippfehler korrigiert: MQTT-Topic heißt jetzt `ChargingStatus` (vorher
+  `CargingStatus`, ohne h). **Achtung:** in der Loxone-Konfiguration muss das
+  Topic entsprechend angepasst werden.
+- Menü-Reiter umbenannt: **Einstellungen** (vorher „Settings"),
+  **gesp. Konfiguration** (vorher „Konfiguration") und **Ladehistorie**
+  (vorher „Load History")
 
 ## Version 1.4
 

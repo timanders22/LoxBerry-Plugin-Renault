@@ -9,13 +9,13 @@ $helptemplate = "help.html";
  $navbar[1]['Name'] = "Home";
 $navbar[1]['URL'] = 'index.php';
  
-$navbar[2]['Name'] = "Load History";
+$navbar[2]['Name'] = "Ladehistorie";
 $navbar[2]['URL'] = 'history.php';
  
-$navbar[3]['Name'] = "Settings";
+$navbar[3]['Name'] = "Einstellungen";
 $navbar[3]['URL'] = 'ersteinrichtung.php';
 
-$navbar[4]['Name'] = "Konfiguration";
+$navbar[4]['Name'] = "gesp. Konfiguration";
 $navbar[4]['URL'] = 'status.php';
 
 $navbar[5]['Name'] = "Log";
@@ -46,7 +46,7 @@ require 'logger.php';
 
 //Check credentials before doing anything
 if (empty($username) || empty($password) || empty($vin)) {
-  renault_log('ERROR', 'Zugangsdaten unvollständig (username/password/vin leer) - bitte Settings ausfüllen.');
+  renault_log('ERROR', 'Zugangsdaten unvollständig (username/password/vin leer) - bitte Einstellungen ausfüllen.');
 }
 if (file_exists('lng/'.$country.'.php')) require 'lng/'.$country.'.php';
 else require 'lng/EN.php';
@@ -293,10 +293,10 @@ if ($update_ok === TRUE) {
         if (isset($rd2['vehicleLinks'])) {
           $vins = array();
           foreach ($rd2['vehicleLinks'] as $vl) if (!empty($vl['vin'])) $vins[] = $vl['vin'];
-          if (empty($vins)) renault_log('ERROR', 'Diagnose: In Account '.$session[2].' ist KEIN Fahrzeug verknüpft. Fahrzeug in der My-Renault-App diesem Konto hinzufügen, oder es wird der falsche Account verwendet (Session-Cache unter Konfiguration löschen!).');
+          if (empty($vins)) renault_log('ERROR', 'Diagnose: In Account '.$session[2].' ist KEIN Fahrzeug verknüpft. Fahrzeug in der My-Renault-App diesem Konto hinzufügen, oder es wird der falsche Account verwendet (Session-Cache unter „gesp. Konfiguration“ löschen!).');
           else {
             renault_log('WARN', 'Diagnose: Im Account verknüpfte VIN(s): '.implode(', ', $vins).' - konfigurierte VIN: '.$vin);
-            if (!in_array($vin, $vins)) renault_log('ERROR', 'Diagnose: Die konfigurierte VIN stimmt mit KEINER VIN im Account überein! Bitte VIN in den Settings korrigieren (Tippfehler?).');
+            if (!in_array($vin, $vins)) renault_log('ERROR', 'Diagnose: Die konfigurierte VIN stimmt mit KEINER VIN im Account überein! Bitte VIN in den Einstellungen korrigieren (Tippfehler?).');
           }
         } else renault_log('WARN', 'Diagnose: Fahrzeugliste nicht lesbar: '.substr(preg_replace('/\s+/', ' ', $r2), 0, 300));
       }
@@ -569,7 +569,7 @@ $mqtt = new Bluerhinos\phpMQTT($creds['brokerhost'],  $creds['brokerport'], $cli
 	$mqtt->publish("Renault/$zoename/LastDataRetrieval", $lastData[2], 0, 1);
 
 
-	$mqtt->publish("Renault/$zoename/CargingStatus", $session[10], 0, 1);
+	$mqtt->publish("Renault/$zoename/ChargingStatus", $session[10], 0, 1);
 	$mqtt->publish("Renault/$zoename/CableStatus", $session[11], 0, 1);
 	$mqtt->publish("Renault/$zoename/Range", $session[14], 0, 1);
 	$mqtt->publish("Renault/$zoename/ChargingTime", $session[15], 0, 1);

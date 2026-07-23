@@ -8,11 +8,11 @@ $helptemplate = "help.html";
 
 $navbar[1]['Name'] = "Home";
 $navbar[1]['URL'] = 'index.php';
-$navbar[2]['Name'] = "Load History";
+$navbar[2]['Name'] = "Ladehistorie";
 $navbar[2]['URL'] = 'history.php';
-$navbar[3]['Name'] = "Settings";
+$navbar[3]['Name'] = "Einstellungen";
 $navbar[3]['URL'] = 'ersteinrichtung.php';
-$navbar[4]['Name'] = "Konfiguration";
+$navbar[4]['Name'] = "gesp. Konfiguration";
 $navbar[4]['URL'] = 'status.php';
 $navbar[5]['Name'] = "Log";
 $navbar[5]['URL'] = 'log.php';

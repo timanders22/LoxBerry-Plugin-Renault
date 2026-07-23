@@ -8,11 +8,11 @@ $helptemplate = "help.html";
 
 $navbar[1]['Name'] = "Home";
 $navbar[1]['URL'] = 'index.php';
-$navbar[2]['Name'] = "Load History";
+$navbar[2]['Name'] = "Ladehistorie";
 $navbar[2]['URL'] = 'history.php';
-$navbar[3]['Name'] = "Settings";
+$navbar[3]['Name'] = "Einstellungen";
 $navbar[3]['URL'] = 'ersteinrichtung.php';
-$navbar[4]['Name'] = "Konfiguration";
+$navbar[4]['Name'] = "gesp. Konfiguration";
 $navbar[4]['URL'] = 'status.php';
 $navbar[5]['Name'] = "Log";
 $navbar[5]['URL'] = 'log.php';
@@ -113,8 +113,8 @@ if (isset($_GET['clearsession'])) {
 
 <h2>Schnell-Diagnose</h2>
 <table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse">
-<tr><td>Zugangsdaten vollständig</td><td><?=okwarn($username != '' && $password != '' && $vin != '', 'OK', 'FEHLT - bitte unter Settings eintragen!')?></td></tr>
-<tr><td>config.php beschreibbar</td><td><?=okwarn(is_writable(dirname(__FILE__).'/config.php'), 'OK', 'NICHT beschreibbar - Settings können nicht gespeichert werden')?></td></tr>
+<tr><td>Zugangsdaten vollständig</td><td><?=okwarn($username != '' && $password != '' && $vin != '', 'OK', 'FEHLT - bitte unter Einstellungen eintragen!')?></td></tr>
+<tr><td>config.php beschreibbar</td><td><?=okwarn(is_writable(dirname(__FILE__).'/config.php'), 'OK', 'NICHT beschreibbar - Einstellungen können nicht gespeichert werden')?></td></tr>
 <tr><td>Plugin-Verzeichnis beschreibbar</td><td><?=okwarn(is_writable(dirname(__FILE__)), 'OK', 'NICHT beschreibbar - session/log können nicht geschrieben werden')?></td></tr>
 <tr><td>PHP cURL verfügbar</td><td><?=okwarn(function_exists('curl_init'), 'OK', 'FEHLT - php-curl installieren')?></td></tr>
 <tr><td>Logdatei</td><td><?=(file_exists(dirname(__FILE__).'/renault.log') ? 'vorhanden - <a href="log.php">anzeigen</a>' : 'noch nicht vorhanden (wird beim ersten Abruf über Home erzeugt)')?></td></tr>
