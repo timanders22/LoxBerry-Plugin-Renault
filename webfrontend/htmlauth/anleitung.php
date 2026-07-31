@@ -116,6 +116,41 @@ H&auml;kchen &bdquo;Visualisierung&ldquo; setzen, fertig ist die App-Kachel.<br>
 (<span class="rna-mono">?cmoff</span>) senden &rarr; das Auto l&auml;dt sofort; bei Wolken wieder
 <span class="rna-mono">?cmon</span> &rarr; das Auto wartet auf den Ladeplan.</div>
 
+<div class="rna-step"><b>Schritt 6: Komplette Baustein-Liste zum 1:1-Nachbauen</b><br><br>
+So sieht die vollst&auml;ndige Logik auf der Loxone-Programmierseite aus (jede Zeile = ein Baustein).
+Alle Bausteine findet man in Loxone Config &uuml;ber die Baustein-Suche (F5). Die Namen der virtuellen
+Eing&auml;nge entstehen aus dem MQTT-Thema, wobei das Gateway jeden Schr&auml;gstrich durch einen
+Unterstrich ersetzt &mdash; aus <span class="rna-mono">Renault/<?= $rza ?>/BattSOC</span> wird also
+<span class="rna-mono">Renault_<?= $rza ?>_BattSOC</span>.
+<table class="rna-tbl">
+<tr><th>#</th><th>Baustein (Typ)</th><th>Name (Vorschlag)</th><th>Parameter</th><th>Eing&auml;nge verbinden mit</th></tr>
+<tr><td>1</td><td>Virtueller Eingang</td><td class="rna-mono">Renault_<?= $rza ?>_BattSOC</td><td>Einheit %, 0 Nachkommastellen</td><td>&mdash; (kommt &uuml;ber das Gateway)</td></tr>
+<tr><td>2</td><td>Virtueller Eingang</td><td class="rna-mono">Renault_<?= $rza ?>_Range</td><td>Einheit km</td><td>&mdash;</td></tr>
+<tr><td>3</td><td>Virtueller Eingang</td><td class="rna-mono">Renault_<?= $rza ?>_ChargingStatus</td><td>digital, 1 = l&auml;dt</td><td>&mdash;</td></tr>
+<tr><td>4</td><td>Virtueller Eingang</td><td class="rna-mono">Renault_<?= $rza ?>_CableStatus</td><td>digital, 1 = Kabel steckt</td><td>&mdash;</td></tr>
+<tr><td>5</td><td>Virtueller Eingang</td><td class="rna-mono">Renault_<?= $rza ?>_ChargingTime</td><td>Einheit min</td><td>&mdash;</td></tr>
+<tr><td>6</td><td>Virtueller Eingang</td><td class="rna-mono">Renault_<?= $rza ?>_Mileage</td><td>Einheit km</td><td>&mdash;</td></tr>
+<tr><td>7</td><td>Auswahltasten (+/&minus;)</td><td>Auto: Ziel-Ladestand (%)</td><td>Standard 80, Schrittweite 5, Min 50, Max 100, Visualisierung EIN</td><td>&mdash; (Bedienung in der App)</td></tr>
+<tr><td>8</td><td>Formel</td><td>Rest bis Ziel (%)</td><td>Formel: <span class="rna-mono">I2-I1</span></td><td>I1 = #1, I2 = AQ von #7</td></tr>
+<tr><td>9</td><td>Schwellwertschalter</td><td>Ziel-Ladestand erreicht</td><td>Ein <b>0,4</b> / Aus <b>0,6</b> (Ein &lt; Aus = schaltet beim <b>Unter</b>schreiten ein)</td><td>Eingang = #8</td></tr>
+<tr><td>10</td><td>UND</td><td>Ladung fertig melden</td><td>&mdash;</td><td>I1 = #9, I2 = #3</td></tr>
+<tr><td>11</td><td>Benachrichtigung</td><td>Auto geladen</td><td>Text z.&nbsp;B. &bdquo;Das Auto hat den Ziel-Ladestand erreicht.&ldquo;</td><td>&larr; #10</td></tr>
+<tr><td>12</td><td>UND + NICHT</td><td>Kabel steckt, l&auml;dt aber nicht</td><td>&mdash;</td><td>I1 = #4, I2 = #3 <b>invertiert</b></td></tr>
+<tr><td>13</td><td>Einschaltverz&ouml;gerung</td><td>Ladung h&auml;ngt</td><td>1800&nbsp;s (30&nbsp;min)</td><td>Eingang = #12 &rarr; Benachrichtigung</td></tr>
+<tr><td>14</td><td>Virtueller Ausgang + Befehle</td><td>Renault</td><td>Adresse des LoxBerry, Befehle wie in Schritt&nbsp;4</td><td><span class="rna-mono">?cmoff</span> bei PV-&Uuml;berschuss, <span class="rna-mono">?cmon</span> wenn der &Uuml;berschuss wegbleibt</td></tr>
+<tr><td>15</td><td>Ausschaltverz&ouml;gerung</td><td>PV-&Uuml;berschuss stabil</td><td>300&nbsp;s</td><td>Eingang = &Uuml;berschuss-Schwellwertschalter &rarr; #14</td></tr>
+<tr><td>16</td><td>Status</td><td>Auto</td><td>Statustext siehe Schritt&nbsp;5, Visualisierung EIN</td><td>v1 = #1, v2 = #2, v3 = #5</td></tr>
+</table>
+<br>
+<b>Zu #9:</b> die Ein-Schwelle liegt <i>unter</i> der Aus-Schwelle. So schaltet der Baustein ein,
+sobald der Rest auf null f&auml;llt, und erst wieder aus, wenn wirklich Abstand da ist &mdash; ohne
+diese Hysterese flattert die Meldung an der Grenze hin und her.<br>
+<b>Zu #11 und #13:</b> ein Benachrichtigungs-Baustein sendet nur bei einem Wechsel von Aus auf Ein.
+Niemals mehrere Quellen direkt an seinen Eingang legen &mdash; erst &uuml;ber einen ODER-Baustein
+zusammenf&uuml;hren, sonst verschluckt eine dauerhaft aktive Quelle alle &uuml;brigen.<br>
+<b>Zu #15:</b> ohne die Verz&ouml;gerung schaltet eine vorbeiziehende Wolke den Ladeplan im
+Minutentakt um. Renault begrenzt die Zugriffe &mdash; 300&nbsp;Sekunden sind ein ruhiger Wert.</div>
+
 <div class="rna-step"><b>Stolperfallen aus der Praxis</b><br><br>
 &bull; Renault erlaubt <b>max. 1 Datenabruf pro Minute</b> &mdash; das Plugin h&auml;lt das automatisch ein
 (Meldung &bdquo;Abruf &uuml;bersprungen&ldquo; im Log ist also normal).<br>
