@@ -12,7 +12,7 @@ Basiert auf [ZoePHP](https://github.com/db-EV/ZoePHP) von db-EV.
 
 - Abruf von Batterie-/Lade-/Fahrzeugdaten über die My-Renault-API (Gigya/Kamereon)
 - MQTT-Publish über das LoxBerry MQTT Gateway (Topics `Renault/<Autoname>/...`)
-- Kommandos: Vorklimatisierung, Sofortladen, Ladeplan ein/aus (`?acnow`, `?chargenow`, `?cmon`, `?cmoff`)
+- Kommandos: Vorklimatisierung, Sofortladen, Ladeplan ein/aus über den Endpunkt `/plugins/Renault_API/index.php?token=<TOKEN>&aktion=acnow` (ohne LoxBerry-Anmeldung, dafür mit Token)
 - Ladehistorie (CSV) mit Diagramm-Seite
 - Reiter **gesp. Konfiguration** (gespeicherte Einstellungen + Schnell-Diagnose),
   **Log** (jeder API-Schritt wird protokolliert) und **Anleitung**

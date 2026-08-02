@@ -7,31 +7,14 @@ $L = LBSystem::readlanguage("language.ini");
 $template_title = "Renault-Api";
 $helplink = "http://www.loxwiki.eu:80/x/2wzL";
 $helptemplate = "help.html";
- 
-
-
-$navbar[1]['Name'] = "Home";
-$navbar[1]['URL'] = 'index.php';
- 
-$navbar[2]['Name'] = "Ladehistorie";
-$navbar[2]['URL'] = 'history.php';
- 
-$navbar[3]['Name'] = "Einstellungen";
-$navbar[3]['URL'] = 'ersteinrichtung.php';
-
-$navbar[4]['Name'] = "gesp. Konfiguration";
-$navbar[4]['URL'] = 'status.php';
-
-$navbar[5]['Name'] = "Log";
-$navbar[5]['URL'] = 'log.php';
-$navbar[6]['Name'] = "Anleitung";
-$navbar[6]['URL'] = 'anleitung.php';
 
 
 // Activate the second element
-$navbar[2]['active'] = True;
 
  
+$navbar[1]['Name'] = 'Zur&uuml;ck zur Oberfl&auml;che';
+$navbar[1]['URL']  = 'index.php';
+$navbar[1]['active'] = True;
 LBWeb::lbheader($template_title, $helplink, $helptemplate);
 
 
